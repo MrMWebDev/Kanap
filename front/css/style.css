@@ -213,7 +213,10 @@ footer .footerSecondary {
 	padding: 25px 0;
 }
 
-
+/* Footer signature */
+footer .signature a {
+    color: white;
+}
 
 
 /***************/
