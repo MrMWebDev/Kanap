@@ -1,7 +1,7 @@
 let items = JSON.parse(localStorage.getItem("cart"));
 const positionEmptyCart = document.querySelector("#cart__items");
 
-//Si le panier est vide
+//If the basket is empty
 function getCart(itemsList){
 if (itemsList === null || itemsList == 0) {
     const emptyCart = `<p>Votre panier est vide</p>`;
@@ -9,66 +9,61 @@ if (itemsList === null || itemsList == 0) {
 } else {
 
 for (let produit of itemsList){
-    // Insertion de l'élément "article"
+
     let productArticle = document.createElement("article");
     document.querySelector("#cart__items").appendChild(productArticle);
     productArticle.className = "cart__item";
     productArticle.setAttribute('data-id',produit.selectedId);
     productArticle.setAttribute('data-color',produit.selectedColors);
     
-// Insertion de l'élément "div"
     let productDivImg = document.createElement("div");
     productArticle.appendChild(productDivImg);
     productDivImg.className = "cart__item__img";
 
-// Insertion de l'image
     let productImg = document.createElement("img");
     productDivImg.appendChild(productImg);
     productImg.src = produit.selectedImage;
     productImg.alt = produit.selectedAlttxt;
 
-// Insertion de l'élément "div"
     let productItemContent = document.createElement("div");
     productArticle.appendChild(productItemContent);
     productItemContent.className = "cart__item__content";
 
-// Insertion de l'élément "div"
     let productItemContentTitlePrice = document.createElement("div");
     productItemContent.appendChild(productItemContentTitlePrice);
     productItemContentTitlePrice.className = "cart__item__content__description";
 
-// Insertion du titre h2
+
     let productTitle = document.createElement("h2");
     productItemContentTitlePrice.appendChild(productTitle);
     productTitle.innerHTML = produit.selectedName;
 
-// Insertion de la couleur
+
     let productColor = document.createElement("p");
     productTitle.appendChild(productColor);
     productColor.innerHTML = produit.selectedColors;
     productColor.style.fontSize = "20px";
 
-// Insertion du prix
+
     let productPrice = document.createElement("p");
     productItemContentTitlePrice.appendChild(productPrice);
     productPrice.innerHTML = produit.selectedPrice + " €";
 
-// Insertion de l'élément "div"
+
     let productItemContentSettings = document.createElement("div");
     productItemContent.appendChild(productItemContentSettings);
     productItemContentSettings.className = "cart__item__content__settings";
 
-// Insertion de l'élément "div"
+
     let productItemContentSettingsQuantity = document.createElement("div");
     productItemContentSettings.appendChild(productItemContentSettingsQuantity);
     productItemContentSettingsQuantity.className = "cart__item__content__settings__quantity";
 
-// Insertion de "Qté : "
-    let productQte = document.createElement("p");
-    productItemContentSettingsQuantity.appendChild(productQte);
-    productQte.innerHTML = "Qté : ";
+    let productQty = document.createElement("p");
+    productItemContentSettingsQuantity.appendChild(productQty);
+    productQty.innerHTML = "Qty : ";
 
-// Insertion de la quantité
+// Inserting the quantity
     let productQuantity = document.createElement("input");
     productItemContentSettingsQuantity.appendChild(productQuantity);
     productQuantity.value = produit.selectedQuantity;
@@ -78,26 +73,25 @@ for (let produit of itemsList){
     productQuantity.setAttribute("max", "100");
     productQuantity.setAttribute("name", "itemQuantity");
 
-// Insertion de l'élément "div"
     let productItemContentSettingsDelete = document.createElement("div");
     productItemContentSettings.appendChild(productItemContentSettingsDelete);
     productItemContentSettingsDelete.className = "cart__item__content__settings__delete";
 
-// Insertion de "p" supprimer
+// Insert "p" delete
     let productSupprimer = document.createElement("p");
     productItemContentSettingsDelete.appendChild(productSupprimer);
     productSupprimer.className = "deleteItem";
-    productSupprimer.innerHTML = "Supprimer";
+    productSupprimer.innerHTML = "Delete";
 }
 }}
     getCart(items);
 
-    // Récupération du total des quantités
+    // Retrieval of total quantities
     let elemsQtt = document.getElementsByClassName('itemQuantity');
-    let myLength = elemsQtt.length, // Total des articles présent dans le panier
+    let myLength = elemsQtt.length, // Total items in cart
     totalQtt = 0;
 
-    for (let i = 0; i < myLength; ++i) { // Boucle for qui compte et rajoute les article dans le panier
+    for (let i = 0; i < myLength; ++i) { // For loop that counts and adds the items to the cart
      totalQtt += elemsQtt[i].valueAsNumber;
     }
 
@@ -105,11 +99,11 @@ for (let produit of itemsList){
     productTotalQuantity.innerHTML = totalQtt;
     console.log(totalQtt);
 
-    // Récupération du prix total
+    // Total price retrieval
 
     totalPrice = 0;
 
-    for (var i = 0; i < myLength; ++i) { // Boucle for qui compte et rajoute le prix du panier 
+    for (var i = 0; i < myLength; ++i) { // for loop that counts and adds the price of the basket
         totalPrice += (elemsQtt[i].valueAsNumber * items[i].selectedPrice);  
     }
 
@@ -123,7 +117,7 @@ for (let produit of itemsList){
     for (let k = 0; k < qttModif.length; k++){
         qttModif[k].addEventListener("change" , (event) => {
             event.preventDefault();
-     //Selection de l'element à modifier en fonction de son id ET sa couleur
+     //Selection of the element to modify according to its id and its color
     let quantityModif = items[k].selectedQuantity;
     console.log("quantityModif",quantityModif)
     
@@ -132,58 +126,57 @@ for (let produit of itemsList){
     items[k].selectedQuantity = qttModifValue
     localStorage.setItem("cart", JSON.stringify(items));
         
-    // refresh rapide
+    // quick refresh
     location.reload();
 })
 }
-// Suppression d'un produit
+// Deleting a product
 
     let btn_supprimer = document.querySelectorAll(".deleteItem");
 
     for (let j = 0; j < btn_supprimer.length; j++){
         btn_supprimer[j].addEventListener("click" , (event) => {
             event.preventDefault();
- //Selection de l'element à supprimer en fonction de son id ET sa couleur
+ //Selection of the element to delete according to its id and its color
     let idDelete = items[j].selectedId;
     let colorDelete = items[j].selectedColors;
     itemsList = items.filter( el => el.selectedId !== idDelete || el.selectedColors !== colorDelete );
     console.log("itemsList",itemsList)       
     localStorage.setItem("cart", JSON.stringify(itemsList));
-             //Alerte produit supprimé et refresh
-    alert("Ce produit a bien été supprimé du panier");
+             //Product alert deleted and refresh
+    alert("This product has been successfully removed from the cart");
    location.reload();
          })
      }
 
-     //Formulaire
+     //Form
 
     // Variables Regex
     let nameRegex = /^[a-zA-Z\-çñàéèêëïîôüù ]{2,}$/;
     let adressRegex = /^[0-9a-zA-Z\s,.'-çñàéèêëïîôüù]{3,}$/;
     let emailRegex = /^[A-Za-z0-9\-\.]+@([A-Za-z0-9\-]+\.)+[A-Za-z0-9-]{2,4}$/;
-// Variables pour récupérer les id des champs de formulaire
+
+// Variables to retrieve form field ids
     const firstName = document.getElementById("firstName");
     const lastName = document.getElementById("lastName");
     const address = document.getElementById("address");
     const city = document.getElementById("city");
     const email = document.getElementById("email");
 
-// Validation prénom
     firstName.addEventListener("input", (event) => {
     event.preventDefault();
     if (nameRegex.test(firstName.value) == false || firstName.value == "") {
     document.getElementById("firstNameErrorMsg").innerHTML =
-      "Prénom non valide";
+      "Invalid first name";
   } else {
     document.getElementById("firstNameErrorMsg").innerHTML = "";
   }
 });
 
-// Validation nom
     lastName.addEventListener("input", (event) => {
     event.preventDefault();
     if (nameRegex.test(lastName.value) == false || lastName.value == "") {
-    document.getElementById("lastNameErrorMsg").innerHTML = "Nom non valide";
+    document.getElementById("lastNameErrorMsg").innerHTML = "Invalid last name";
     return false;
     } else {
     document.getElementById("lastNameErrorMsg").innerHTML = "";
@@ -191,11 +184,10 @@ for (let produit of itemsList){
   }
 });
 
-// Validation adresse
     address.addEventListener("input", (event) => {
   event.preventDefault();
   if (adressRegex.test(address.value) == false || address.value == "") {
-    document.getElementById("addressErrorMsg").innerHTML = "Adresse non valide";
+    document.getElementById("addressErrorMsg").innerHTML = "Invalid Adress";
     return false;
   } else {
     document.getElementById("addressErrorMsg").innerHTML = "";
@@ -203,11 +195,10 @@ for (let produit of itemsList){
   }
 });
 
-// Validation ville
     city.addEventListener("input", (event) => {
     event.preventDefault();
     if (nameRegex.test(city.value) == false || city.value == "") {
-    document.getElementById("cityErrorMsg").innerHTML = "Ville non valide";
+    document.getElementById("cityErrorMsg").innerHTML = "Invalid City";
     return false;
     } else {
     document.getElementById("cityErrorMsg").innerHTML = "";
@@ -215,11 +206,10 @@ for (let produit of itemsList){
 }
 });
 
-// Validation email
     email.addEventListener("input", (event) => {
     event.preventDefault();
     if (emailRegex.test(email.value) == false || email.value == "") {
-    document.getElementById("emailErrorMsg").innerHTML = "Email non valide";
+    document.getElementById("emailErrorMsg").innerHTML = "Invalid Email";
     return false; 
     }
     else {
@@ -231,7 +221,7 @@ for (let produit of itemsList){
     let order = document.getElementById("order");
     order.addEventListener("click", (e) => {
     e.preventDefault();
-  // création d'un tableau afin de récuperer les données de l'utilisateur
+  // creating a table to retrieve user data
     let contact = {
     firstName: firstName.value,
     lastName: lastName.value,
@@ -248,7 +238,7 @@ for (let produit of itemsList){
     email.value === ""
   ) {
     window.confirm(
-      "Vous devez renseigner vos coordonnées pour passer la commande !"
+      "You must enter your details to place the order!"
     );
   } else if (
     nameRegex.test(firstName.value) == false ||
@@ -257,7 +247,7 @@ for (let produit of itemsList){
     nameRegex.test(city.value) == false ||
     emailRegex.test(email.value) == false
   ) {
-    window.confirm("Merci de renseigner correctement vos coordonnées !");
+    window.confirm("Please enter your details correctly!");
   } else {
     let products = [];
     items.forEach((order) => {
@@ -266,7 +256,7 @@ for (let produit of itemsList){
 
     let pageOrder = { contact, products };
 
-    // Appel à l'api order pour envoyer les tableaux
+    // Call to the order API to send the tables
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
@@ -283,7 +273,7 @@ for (let produit of itemsList){
         localStorage.clear();
       })
       .catch((error) => {
-        console.log("une erreur est survenue");
+        console.log("An error has occurred");
       });
   }
 });
