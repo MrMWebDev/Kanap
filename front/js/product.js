@@ -43,7 +43,7 @@ fetch("http://localhost:3000/api/products/"+id)
     selectedImage : document.getElementById("image").src, 
     selectedAltTxt : document.getElementById ("image").alt,
     selectedName : document.getElementById("name").textContent,
-    // selectedPrice : document.getElementById("price").textContent,
+    selectedPrice : document.getElementById("price").textContent,
     selectedId : id,
     selectedColors : document.querySelector("#colors").value,
     selectedQuantity : parseInt(document.querySelector("#quantity").value),
